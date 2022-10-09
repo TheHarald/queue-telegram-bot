@@ -5,6 +5,9 @@ export const showQueueCommand = /^\/show [A-Za-zА-Яа-я_]{3,10}$/
 export const deleteQueueCommand = /^\/delete [A-Za-zА-Яа-я_]{3,10}$/
 export const helpCommand = /^\/help$/
 export const startCommand = /^\/start$/
+export const testCommand = /^\/test$/
+
+
 
 
 

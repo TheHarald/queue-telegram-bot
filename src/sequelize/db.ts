@@ -8,7 +8,7 @@ export const database = new Sequelize(
     process.env.DB_USERNAME, 
     process.env.DB_PASSWORD,{ 
         dialect:'mysql',
-        host:'localhost'
+        host:'telegram-bot-db',
     })
 
 

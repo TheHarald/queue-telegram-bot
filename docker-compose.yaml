@@ -1,0 +1,45 @@
+version: "3.9"
+services:
+  telegram-bot-db:
+    build: ./src/sequelize
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-psecret",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - ./src/sequelize:/app
+    networks:
+      - telegram-bot-network
+    environment:
+      - MYSQL_DATABASE=${DATABASE}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+
+  telegram-bot:
+    build: .
+    environment:
+      TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
+    ports:
+      - "3001:3001"
+    networks:
+      - telegram-bot-network
+    depends_on:
+      telegram-bot-db:
+        condition: service_healthy
+
+networks:
+  telegram-bot-network:
+    driver: bridge
+
+volumes:
+  telegram-bot-db-data:

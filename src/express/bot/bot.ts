@@ -3,13 +3,17 @@ import { Queue, QueuePosition } from './../../sequelize/db';
 import { Message } from "node-telegram-bot-api";
 import TelegramBot from "node-telegram-bot-api";
 import * as dotenv from 'dotenv';
-import { createQueueCommand, showQueuesCommand, takeQueueCommand, showQueueCommand, startMessage, startCommand, helpCommand } from './messages';
+import { createQueueCommand, showQueuesCommand, takeQueueCommand, showQueueCommand, startMessage, startCommand, helpCommand, deleteQueueCommand, testCommand } from './messages';
 dotenv.config()
 
 
 
 export function startBot(){
     const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, {polling: true});
+
+    bot.onText(testCommand, (msg: Message) => {
+        bot.sendMessage(msg.chat.id, "test");
+    })
 
     bot.onText(startCommand || helpCommand, (msg:Message) => {
         const chatId = msg.chat.id;
@@ -82,6 +86,34 @@ export function startBot(){
             bot.sendMessage(chatId, `Очередь ${queueName} не найдена`)
         }  
     });
+
+
+    bot.onText(deleteQueueCommand, async (msg:Message) => {
+        const chatId = msg.chat.id;
+        let message = msg.text;
+        const queueName = message.split(' ')[1];
+
+        if(await isQueueExist(queueName)){
+
+            const requestQueuePosition:any = await QueuePosition.destroy({
+                where:{
+                    queueName:queueName
+                }
+            })
+
+            const requestQueue:any = await Queue.destroy({
+                where:{
+                    name:queueName
+                }
+            })
+            bot.sendMessage(chatId, `Очередь ${queueName} удалена`)
+        }else{
+            bot.sendMessage(chatId, `Очередь ${queueName} не найдена`)
+        }
+    });
+
+
+
 
     bot.onText(showQueueCommand, async (msg:Message) => {
         const chatId = msg.chat.id;

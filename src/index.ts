@@ -19,10 +19,19 @@ async function assertDatabaseConnectionOk() {
 
 
 function init(){
-    assertDatabaseConnectionOk();
-    app.listen(PORT, () => {
-        console.log('Example app listening on port 3001!');
-    });
+    assertDatabaseConnectionOk()
+	.then(
+		() => {
+			app.listen(PORT, () => {
+				console.log('Example app listening on port 3001!');
+			});
+		}
+	).catch(
+		(error) => {
+			console.log(error);
+		}
+	)
+    
 }
 
 
