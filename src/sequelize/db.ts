@@ -8,7 +8,7 @@ export const database = new Sequelize(
     process.env.DB_USERNAME, 
     process.env.DB_PASSWORD,{ 
         dialect:'mysql',
-        host:'telegram-bot-db',
+        host: process.env.DB_HOST || 'localhost',
     })
 
 
@@ -25,6 +25,28 @@ export const QueuePosition = database.define("queuePosition", {
     },
     position:{
         type:DataTypes.INTEGER,
+        allowNull:false
+    }
+})
+
+
+export const Role = database.define("role", {
+    id:{
+        type:DataTypes.INTEGER,
+        primaryKey:true,
+        autoIncrement:true
+    },
+
+    telegramId:{
+        type:DataTypes.STRING,
+        allowNull:false
+    },
+    role:{
+        type:DataTypes.STRING,
+        allowNull:false
+    },
+    aproved:{
+        type:DataTypes.BOOLEAN,
         allowNull:false
     }
 })

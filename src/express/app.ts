@@ -9,7 +9,7 @@ app.use(express.static('static'))
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.send(`${process.env.DATABASE}`);}
+    res.send(`API start page`);}
 );
 
 startBot();
