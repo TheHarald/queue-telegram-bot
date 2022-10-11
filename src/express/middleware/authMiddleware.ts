@@ -13,6 +13,4 @@ export async function checkRole(msg:Message){
     })
 
     return role? role.dataValues.role : null;
-
-
 }

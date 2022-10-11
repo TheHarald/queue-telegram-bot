@@ -39,7 +39,8 @@ export const Role = database.define("role", {
 
     telegramId:{
         type:DataTypes.STRING,
-        allowNull:false
+        allowNull:false,
+        unique:true
     },
     role:{
         type:DataTypes.STRING,
